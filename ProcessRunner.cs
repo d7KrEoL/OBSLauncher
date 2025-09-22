@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace OBSLauncher
 {
-    public class ProcessRunner
+    public class ProcessRunner : IProcessRunner
     {
         public delegate bool RunProcessDelegate(string processPath);
         private event RunProcessDelegate RunProcessEvent;

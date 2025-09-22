@@ -1,0 +1,31 @@
+﻿using System.IO;
+using System.Windows.Forms;
+
+namespace OBSLauncher
+{
+    public static class FileController
+    {
+        public static (string error, string filePath) FileInfo(string defaultPath)
+        {
+            if (File.Exists(defaultPath))
+                return ("По заданному пути отсутствует программа OBS.\n" +
+                    "Пожалуйста укажите путь к программе!", defaultPath);
+            MessageBox.Show("",
+                "Ошибка",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+            var folder = new OpenFileDialog();
+            folder.CheckFileExists = true;
+            folder.CheckPathExists = true;
+            if (folder.ShowDialog().Equals(DialogResult.OK))
+            {
+                if (File.Exists(folder.FileName))
+                    return (string.Empty, folder.FileName);
+                else
+                    return ("Невозможно определить путь к OBS", string.Empty);
+            }
+            else
+                return ("Невозможно определить путь к OBS", string.Empty);
+        }
+    }
+}

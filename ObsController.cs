@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OBSLauncher
 {
-    public static class ObsController
+    public class ObsController : LaunchProgramControllerBase
     {
-        public static bool RunProcess(string shortcutPath)
+        public override bool RunProcess(string shortcutPath)
         {
             try
             {

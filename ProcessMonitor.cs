@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Windows.Forms;
 
 namespace OBSLauncher
 {
-    public class ProcessMonitor
+    public class ProcessMonitor : IProcessMonitor
     {
         private readonly string _targetProcessName;
-        private readonly ProcessRunner _runner;
+        private readonly IProcessRunner _runner;
         private readonly Timer _checkTimer;
         private readonly Timer _delayTimer;
-        
+
         private bool _obsRunning = false;
         private bool _gtaDetected = false;
         private const int DELAY_SECONDS = 50;
         private const int MILLISECONDS_IN_SECOND = 1000;
 
-        public ProcessMonitor(string targetProcessName, ProcessRunner runner)
+        public ProcessMonitor(string targetProcessName, IProcessRunner runner)
         {
             if (targetProcessName is null || targetProcessName.Length < 1)
                 throw new ArgumentException("targetProccessName cannot be empty string");
