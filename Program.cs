@@ -9,13 +9,17 @@ namespace OBSLauncher
 {
     public class Program : Form
     {
-        private const string GTA_PROCESS_NAME = "gta_sa.exe";
-        private const string OBS_SHORTCUT_DEFAULT_PATH = @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\OBS Studio\OBS Studio (64bit).lnk";
-        private TextBox textBox1;
-        private Label label1;
-        private Button button1;
-        private Panel panel1;
+        private const string GtaDefaultProcessName = "gta_sa.exe";
+        private const string ObsShortcutDefaultPath = @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\OBS Studio\OBS Studio (64bit).lnk";
+        private const string RegistryUserKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+        private TextBox _textBox1;
+        private Label _label1;
+        private Button _button1;
+        private Panel _panel1;
         private readonly string _obsPath;
+        private readonly ObsController _obsController;
+        private readonly ProcessRunner _runner;
+        private ProcessMonitor _monitor;
 
         [STAThread]
         public static void Main()
@@ -59,25 +63,23 @@ namespace OBSLauncher
 
         public Program()
         {
-            (var error, _obsPath) = FileController.FileInfo(OBS_SHORTCUT_DEFAULT_PATH);
-            if (!string.IsNullOrEmpty(error))
+            (var error, _obsPath) = FileController.FileInfo(ObsShortcutDefaultPath);
+            if (!string.IsNullOrEmpty(error) || string.IsNullOrEmpty(_obsPath))
             {
                 MessageBox.Show(error,
                     "Ошибка",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-                Close();
+                Environment.Exit(0);
             }
-            ObsController controller = new ObsController();
-            ProcessMonitor processMonitor;
-            ProcessRunner runner;
+            _obsController = new ObsController();
             InitializeTrayIcon();
             InitializeComponent();
             AddToStartup();
-            runner = new ProcessRunner(_obsPath);
-            runner.RegisterEvent(controller.RunProcess);
-            processMonitor = new ProcessMonitor(GTA_PROCESS_NAME, runner);
-            processMonitor.StartMonitoring();
+            _runner = new ProcessRunner(_obsPath);
+            _runner.RegisterEvent(_obsController.RunProcess);
+            _monitor = new ProcessMonitor(GtaDefaultProcessName, _runner);
+            _monitor.StartMonitoring();
 
             // Настройка формы
             ShowInTaskbar = false;
@@ -123,71 +125,73 @@ namespace OBSLauncher
 
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            label1 = new Label();
-            button1 = new Button();
-            panel1 = new Panel();
-            panel1.SuspendLayout();
+            _textBox1 = new TextBox();
+            _label1 = new Label();
+            _button1 = new Button();
+            _panel1 = new Panel();
+            _panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // textBox1
+            // _textBox1
             // 
-            textBox1.BackColor = Color.CadetBlue;
-            textBox1.ForeColor = Color.Honeydew;
-            textBox1.Location = new Point(100, 41);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 0;
-            textBox1.Text = "gta_sa.exe";
-            textBox1.TextAlign = HorizontalAlignment.Center;
+            _textBox1.BackColor = Color.CadetBlue;
+            _textBox1.ForeColor = Color.Honeydew;
+            _textBox1.Location = new Point(100, 41);
+            _textBox1.Name = "_textBox1";
+            _textBox1.Size = new Size(100, 23);
+            _textBox1.TabIndex = 0;
+            _textBox1.Text = "gta_sa.exe";
+            _textBox1.TextAlign = HorizontalAlignment.Center;
+            _textBox1.TextChanged += textBox1_TextChanged;
             // 
-            // label1
+            // _label1
             // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.SlateGray;
-            label1.ForeColor = Color.Honeydew;
-            label1.Location = new Point(56, 11);
-            label1.Name = "label1";
-            label1.Size = new Size(193, 15);
-            label1.TabIndex = 1;
-            label1.Text = "Запускать когда активен процесс:";
+            _label1.AutoSize = true;
+            _label1.BackColor = Color.SlateGray;
+            _label1.ForeColor = Color.Honeydew;
+            _label1.Location = new Point(56, 11);
+            _label1.Name = "_label1";
+            _label1.Size = new Size(193, 15);
+            _label1.TabIndex = 1;
+            _label1.Text = "Запускать когда активен процесс:";
             // 
-            // button1
+            // _button1
             // 
-            button1.Anchor = AnchorStyles.None;
-            button1.BackColor = Color.CadetBlue;
-            button1.ForeColor = Color.Honeydew;
-            button1.Location = new Point(72, 79);
-            button1.Margin = new Padding(1);
-            button1.Name = "button1";
-            button1.Size = new Size(141, 23);
-            button1.TabIndex = 2;
-            button1.Text = "Изменить путь к OBS";
-            button1.UseVisualStyleBackColor = false;
+            _button1.Anchor = AnchorStyles.None;
+            _button1.BackColor = Color.CadetBlue;
+            _button1.ForeColor = Color.Honeydew;
+            _button1.Location = new Point(72, 79);
+            _button1.Margin = new Padding(1);
+            _button1.Name = "_button1";
+            _button1.Size = new Size(141, 23);
+            _button1.TabIndex = 2;
+            _button1.Text = "Изменить путь к OBS";
+            _button1.UseVisualStyleBackColor = false;
             // 
-            // panel1
+            // _panel1
             // 
-            panel1.BackColor = Color.SlateGray;
-            panel1.Controls.Add(textBox1);
-            panel1.Controls.Add(label1);
-            panel1.Location = new Point(-3, -2);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(289, 73);
-            panel1.TabIndex = 3;
+            _panel1.BackColor = Color.SlateGray;
+            _panel1.Controls.Add(_textBox1);
+            _panel1.Controls.Add(_label1);
+            _panel1.Location = new Point(-3, -2);
+            _panel1.Name = "_panel1";
+            _panel1.Size = new Size(289, 73);
+            _panel1.TabIndex = 3;
             // 
             // Program
             // 
             BackColor = Color.DarkSlateGray;
             ClientSize = new Size(284, 106);
-            Controls.Add(button1);
-            Controls.Add(panel1);
+            Controls.Add(_button1);
+            Controls.Add(_panel1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
-            Name = "OBSLauncher";
-            Opacity = 0.3D;
+            Name = "Program";
+            Opacity = 0.8D;
             ShowIcon = false;
             SizeGripStyle = SizeGripStyle.Hide;
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            _panel1.ResumeLayout(false);
+            _panel1.PerformLayout();
             ResumeLayout(false);
 
         }
@@ -197,13 +201,27 @@ namespace OBSLauncher
             try
             {
                 string appPath = Application.ExecutablePath;
-                RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                RegistryKey rk = Registry.CurrentUser.OpenSubKey(RegistryUserKey, true);
                 rk.SetValue("OBSLauncher", appPath);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка при добавлении в автозагрузку: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (!ProcessNameValidator.Validate(_textBox1.Text))
+            {
+                _textBox1.BackColor = Color.Red;
+                return;
+            }
+            else
+                _textBox1.BackColor = Color.CadetBlue;
+            _monitor.StopMonitoring();
+            _monitor = new ProcessMonitor(_textBox1.Text, _runner);
+            _monitor.StartMonitoring();
         }
     }
 }

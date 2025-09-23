@@ -8,9 +8,9 @@ namespace OBSLauncher
         public static (string error, string filePath) FileInfo(string defaultPath)
         {
             if (File.Exists(defaultPath))
-                return ("По заданному пути отсутствует программа OBS.\n" +
-                    "Пожалуйста укажите путь к программе!", defaultPath);
-            MessageBox.Show("",
+                return (string.Empty, defaultPath);
+            MessageBox.Show("По заданному пути отсутствует программа OBS.\n" +
+                    "Пожалуйста укажите путь к программе!",
                 "Ошибка",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
@@ -22,7 +22,7 @@ namespace OBSLauncher
                 if (File.Exists(folder.FileName))
                     return (string.Empty, folder.FileName);
                 else
-                    return ("Невозможно определить путь к OBS", string.Empty);
+                    return ("Неверно указан путь к OBS", string.Empty);
             }
             else
                 return ("Невозможно определить путь к OBS", string.Empty);

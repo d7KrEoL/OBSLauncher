@@ -34,10 +34,12 @@ namespace OBSLauncher
         public void StartMonitoring()
             => _checkTimer.Start();
 
+        public void StopMonitoring()
+            => _checkTimer.Stop();
+
         private void CheckTimer_Tick(object sender, EventArgs e)
         {
             bool gtaRunning = Process.GetProcessesByName(_targetProcessName).Length > 0;
-
             if (gtaRunning && !_gtaDetected)
             {
                 _gtaDetected = true;
