@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace OBSLauncher
 {
-    public static class FileController
+    public static class FileDialogService
     {
         public static (string error, string filePath) FileInfo(string defaultPath)
         {
@@ -14,6 +14,10 @@ namespace OBSLauncher
                 "Ошибка",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
+            return FileInfo();
+        }
+        public static (string error, string filePath) FileInfo()
+        {
             var folder = new OpenFileDialog();
             folder.CheckFileExists = true;
             folder.CheckPathExists = true;
