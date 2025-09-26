@@ -10,8 +10,6 @@ namespace OBSLauncher
         public event EventHandler? ProcessExited;
         private const string GitHubUrl = "https://github.com/KromSystems/OBSLauncher";
         private Process? _process;
-
-        public ObsService() : this(null) { }
         public ObsService(EventHandler exitProcessHandler)
         {
             ProcessExited += exitProcessHandler;
