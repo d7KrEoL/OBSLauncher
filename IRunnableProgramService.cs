@@ -2,7 +2,7 @@
 {
     public interface IRunnableProgramService
     {
-        bool RunProcess(string shortcutPath);
+        IProcessRunner.RunProcessDelegate RunProcess(string shortcutPath);
         bool StopProcess();
     }
 }

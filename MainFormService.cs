@@ -24,7 +24,7 @@ namespace OBSLauncher
             }
             _obsController = new ObsService(OnRunningProcessExited);
             AddToStartup();
-            StartRunner(new List<ProcessRunner.RunProcessDelegate> { _obsController.RunProcess });
+            StartRunner(new List<IProcessRunner.RunProcessDelegate> { _obsController.RunProcess });
         }
         public void OnRunningProcessExited(object? sender, EventArgs e)
         {
@@ -50,7 +50,7 @@ namespace OBSLauncher
             return _obsController.StopProcess();
         }
 
-        public void StartRunner(List<ProcessRunner.RunProcessDelegate> handlers)
+        public void StartRunner(List<IProcessRunner.RunProcessDelegate> handlers)
         {
             _runner = new ProcessRunner(_obsPath);
             foreach (var handler in handlers)

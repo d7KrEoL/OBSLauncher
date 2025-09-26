@@ -5,8 +5,7 @@ namespace OBSLauncher
 {
     public class ProcessRunner : IProcessRunner
     {
-        public delegate bool RunProcessDelegate(string processPath);
-        private event RunProcessDelegate RunProcessEvent;
+        private event IProcessRunner.RunProcessDelegate RunProcessEvent;
         private readonly string _processPath;
 
         public ProcessRunner(string processPath)
@@ -15,7 +14,7 @@ namespace OBSLauncher
                 throw new ArgumentException("proccessPath cannot be null or empty");
             _processPath = processPath;
         }
-        public void RegisterEvent(RunProcessDelegate runProcessEvent)
+        public void RegisterEvent(IProcessRunner.RunProcessDelegate runProcessEvent)
             => RunProcessEvent += runProcessEvent;
 
         public bool RunProcess()
@@ -33,7 +32,7 @@ namespace OBSLauncher
 
         private bool RunSingleProcess(Delegate process)
         {
-            var runHandler = process as RunProcessDelegate;
+            var runHandler = process as IProcessRunner.RunProcessDelegate;
             if (runHandler is null)
                 return false;
             try
