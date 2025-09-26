@@ -30,7 +30,10 @@ namespace OBSLauncher.Services
                     WorkingDirectory = Path.GetDirectoryName(shortcutPath)
                 });
                 if (_process is null)
-                    throw new Exception("не получилось запустить процесс OBS");
+                {
+                    Debug.WriteLine("не получилось запустить процесс OBS");
+                    return false;
+                }
                 _process.EnableRaisingEvents = true;
                 _process.Exited += OnProcessExited;
             }
@@ -47,12 +50,16 @@ namespace OBSLauncher.Services
                 return false;
             if (!_process.CloseMainWindow())
                 _process.Kill();
+            _process.Exited -= OnProcessExited;
+            _process.Dispose();
             _process = null;
             return true;
         }
         private void OnProcessExited(object? sender, EventArgs e)
         {
             ProcessExited?.Invoke(this, EventArgs.Empty);
+            _process.Exited -= OnProcessExited;
+            _process.Dispose();
             _process = null;
         }
     }

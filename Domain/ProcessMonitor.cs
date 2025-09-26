@@ -79,6 +79,8 @@ namespace OBSLauncher.Domain
         {
             _checkTimer.Stop();
             _delayTimer.Stop();
+            _delayTimer.Tick -= DelayTimer_Tick;
+            _checkTimer.Tick -= CheckTimer_Tick;
             _delayTimer.Dispose();
             _checkTimer.Dispose();
         }

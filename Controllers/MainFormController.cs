@@ -1,6 +1,7 @@
 ﻿using OBSLauncher.Presentation;
 using OBSLauncher.Services;
 using System;
+using System.Diagnostics;
 
 namespace OBSLauncher.Controllers
 {
@@ -64,7 +65,7 @@ namespace OBSLauncher.Controllers
         }
         private void OnProcessExited(object? sender, EventArgs e)
         {
-            _view.ShowInfo("Запущенный процесс был завершён пользователем");
+            Debug.WriteLine("MainFormController: Detected running process exit");
             _service.OnRunningProcessExited(sender, e);
         }
     }
