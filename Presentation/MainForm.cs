@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace OBSLauncher
+namespace OBSLauncher.Presentation
 {
     public class MainForm : Form
     {
@@ -168,6 +168,7 @@ namespace OBSLauncher
             _monitoringActivityButton.BackColor = Color.DarkCyan;
             _monitoringActivityButton.FlatAppearance.BorderSize = 0;
             _monitoringActivityButton.FlatStyle = FlatStyle.Popup;
+            _monitoringActivityButton.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
             _monitoringActivityButton.ForeColor = Color.Honeydew;
             _monitoringActivityButton.Location = new Point(71, 140);
             _monitoringActivityButton.Margin = new Padding(0);
@@ -186,9 +187,10 @@ namespace OBSLauncher
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "MainForm";
-            Opacity = 0.8D;
+            Opacity = 0.9D;
             ShowIcon = false;
             SizeGripStyle = SizeGripStyle.Hide;
+            Text = "OBSLauncher";
             _panel1.ResumeLayout(false);
             _panel1.PerformLayout();
             ResumeLayout(false);

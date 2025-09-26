@@ -1,8 +1,9 @@
-﻿using System;
+﻿using OBSLauncher.Abstractions;
+using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace OBSLauncher
+namespace OBSLauncher.Domain
 {
     public class ProcessMonitor : IProcessMonitor
     {

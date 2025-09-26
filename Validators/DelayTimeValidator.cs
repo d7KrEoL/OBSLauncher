@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace OBSLauncher
+namespace OBSLauncher.Validators
 {
     public static class DelayTimeValidator
     {

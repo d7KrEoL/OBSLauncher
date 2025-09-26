@@ -19,9 +19,9 @@ namespace OBSLauncher
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var mainForm = new MainForm();
-            var service = new MainFormService();
-            var controller = new MainFormController(mainForm, service);
+            var mainForm = new Presentation.MainForm();
+            var service = new Services.MainFormService();
+            var controller = new Controllers.MainFormController(mainForm, service);
             Application.Run(mainForm);
         }
 

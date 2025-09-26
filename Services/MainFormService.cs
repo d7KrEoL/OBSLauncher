@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using OBSLauncher.Abstractions;
+using OBSLauncher.Domain;
+using OBSLauncher.Validators;
 
-namespace OBSLauncher
+namespace OBSLauncher.Services
 {
     public class MainFormService
     {

@@ -1,4 +1,4 @@
-﻿namespace OBSLauncher
+﻿namespace OBSLauncher.Abstractions
 {
     public interface IRunnableProgramService
     {

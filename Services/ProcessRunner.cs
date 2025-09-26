@@ -1,7 +1,8 @@
-﻿using System;
+﻿using OBSLauncher.Abstractions;
+using System;
 using System.Windows.Forms;
 
-namespace OBSLauncher
+namespace OBSLauncher.Services
 {
     public class ProcessRunner : IProcessRunner
     {

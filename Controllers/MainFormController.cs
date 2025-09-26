@@ -1,6 +1,8 @@
-﻿using System;
+﻿using OBSLauncher.Presentation;
+using OBSLauncher.Services;
+using System;
 
-namespace OBSLauncher
+namespace OBSLauncher.Controllers
 {
     public class MainFormController
     {
