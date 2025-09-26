@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace OBSLauncher.Domain
+namespace OBSLauncher.Services
 {
     public class ProcessMonitor : IProcessMonitor
     {
